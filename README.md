@@ -47,6 +47,12 @@ GA4_EVENTS_DEBUG=true
 2) Inject the bridge script once in your layout (before `</body>` is recommended):
 
 ```blade
+<x-ga4-events />
+```
+
+Legacy directive is also available:
+
+```blade
 @ga4Events
 ```
 
@@ -91,7 +97,7 @@ The package automatically listens to `Livewire.on(config.livewireEventName, ...)
 
 ## JavaScript API
 
-After `@ga4Events`, the package creates a global object (default: `window.GA4Events`).
+After `<x-ga4-events />`, the package creates a global object (default: `window.GA4Events`).
 
 ### `track(name, params = {}, options = {})`
 
@@ -251,7 +257,7 @@ Invalid payloads are blocked and never forwarded.
 ### Events not reaching GA4
 
 - Confirm `GA4_MEASUREMENT_ID` is set
-- Confirm `@ga4Events` is rendered in the page
+- Confirm `<x-ga4-events />` is rendered in the page
 - Confirm `window.gtag` exists (if auto inject disabled)
 - Enable `GA4_EVENTS_DEBUG=true` and inspect browser console
 
