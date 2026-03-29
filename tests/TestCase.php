@@ -3,8 +3,8 @@
 namespace MohamedSaid\LaravelGa4Events\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use MohamedSaid\LaravelGa4Events\LaravelGa4EventsServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
