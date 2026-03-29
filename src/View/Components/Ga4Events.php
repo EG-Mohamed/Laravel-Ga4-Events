@@ -2,16 +2,18 @@
 
 namespace MohamedSaid\LaravelGa4Events\View\Components;
 
-use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use MohamedSaid\LaravelGa4Events\LaravelGa4Events;
 
 class Ga4Events extends Component
 {
-    public function render(): Closure
+    public function __construct(private readonly LaravelGa4Events $ga4Events) {}
+
+    public function render(): View
     {
-        return function (): string {
-            return app(LaravelGa4Events::class)->renderBridge();
-        };
+        return view('ga4-events::components.ga4-events', [
+            'ga4Config' => $this->ga4Events->toFrontendConfig(),
+        ]);
     }
 }

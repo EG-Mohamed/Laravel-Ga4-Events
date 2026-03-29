@@ -16,6 +16,7 @@ class LaravelGa4EventsServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-ga4-events')
             ->hasConfigFile('ga4-events')
+            ->hasViews()
             ->hasCommand(LaravelGa4EventsCommand::class);
     }
 
@@ -33,7 +34,7 @@ class LaravelGa4EventsServiceProvider extends PackageServiceProvider
         Blade::component('ga4-events', Ga4Events::class);
 
         Blade::directive('ga4Events', function (): string {
-            return "<?php echo app('".LaravelGa4Events::class."')->renderBridge(); ?>";
+            return "<?php echo app('view')->make('laravel-ga4-events::components.ga4-events', ['ga4Config' => app('".LaravelGa4Events::class."')->toFrontendConfig()])->render(); ?>";
         });
     }
 }

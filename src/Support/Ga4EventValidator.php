@@ -115,7 +115,7 @@ class Ga4EventValidator
         return $output;
     }
 
-    private function normalizeParamValue(mixed $value, array &$errors): string|int|float|bool|null
+    private function normalizeParamValue(mixed $value, array &$errors): string|int|float|bool|array|null
     {
         if (is_string($value)) {
             if (mb_strlen($value) > $this->intConfig('max_param_value_length', 100)) {
@@ -131,9 +131,59 @@ class Ga4EventValidator
             return $value;
         }
 
+        if (is_array($value)) {
+            return $this->normalizeArrayParamValue($value, $errors, 0);
+        }
+
         $errors[] = (string) __('Event param value type is not supported.');
 
         return null;
+    }
+
+    private function normalizeArrayParamValue(array $value, array &$errors, int $depth): array
+    {
+        $maxDepth = $this->intConfig('max_param_nesting', 4);
+
+        if ($depth >= $maxDepth) {
+            $errors[] = (string) __('Event param nesting exceeds the allowed depth.');
+
+            return [];
+        }
+
+        $normalized = [];
+
+        foreach ($value as $key => $item) {
+            $normalizedKey = is_string($key) ? trim(str_replace(' ', '_', $key)) : $key;
+
+            if (is_array($item)) {
+                $normalized[$normalizedKey] = $this->normalizeArrayParamValue($item, $errors, $depth + 1);
+
+                continue;
+            }
+
+            if (is_string($item)) {
+                $maxLength = $this->intConfig('max_param_value_length', 100);
+                $normalized[$normalizedKey] = mb_strlen($item) > $maxLength
+                    ? mb_substr($item, 0, $maxLength)
+                    : $item;
+
+                if (mb_strlen($item) > $maxLength) {
+                    $errors[] = (string) __('Event param value exceeds the allowed length.');
+                }
+
+                continue;
+            }
+
+            if (is_int($item) || is_float($item) || is_bool($item) || $item === null) {
+                $normalized[$normalizedKey] = $item;
+
+                continue;
+            }
+
+            $errors[] = (string) __('Event param value type is not supported.');
+        }
+
+        return $normalized;
     }
 
     private function normalizeOptions(mixed $value): array

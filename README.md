@@ -83,13 +83,16 @@ window.dispatchEvent(new CustomEvent('ga4:event', {
 ### Livewire v3 component event
 
 ```php
-$this->dispatch('ga4-event', [
-    'name' => 'profile_updated',
-    'params' => [
+$this->dispatch(
+    'ga4-event',
+    name: 'profile_updated',
+    params: [
         'section' => 'security',
     ],
-]);
+);
 ```
+
+This package also normalizes wrapped payload shapes like `[$payload]` for compatibility.
 
 ### JavaScript listener inside Livewire pages
 

@@ -19,6 +19,7 @@ return [
     'max_params' => (int) env('GA4_EVENTS_MAX_PARAMS', 25),
     'max_param_key_length' => (int) env('GA4_EVENTS_MAX_PARAM_KEY_LENGTH', 40),
     'max_param_value_length' => (int) env('GA4_EVENTS_MAX_PARAM_VALUE_LENGTH', 100),
+    'max_param_nesting' => (int) env('GA4_EVENTS_MAX_PARAM_NESTING', 4),
     'allowed_name_pattern' => env('GA4_EVENTS_ALLOWED_NAME_PATTERN', '/^[a-zA-Z][a-zA-Z0-9_]*$/'),
     'blocked_param_keys' => [
         'gclid',
